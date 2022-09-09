@@ -1,0 +1,82 @@
+Sub gerar_PDFs()
+On Error GoTo ErrorHandler
+
+Dim path As String
+Dim filename As String
+
+For Each aba In Sheets(Array("Pag. 2 - PL por Classe", "Pag. 4 - PL por Estrut."))
+    
+    With aba
+
+        path = .Range("P3")
+        filename = .Range("P4")
+
+        .ExportAsFixedFormat Type:=xlTypePDF, filename:=path & filename, Quality:= _
+            xlQualityStandard, IncludeDocProperties:=True, IgnorePrintAreas:=False, _
+            OpenAfterPublish:=True
+    End With
+Next
+
+MsgBox "PDF criado com sucesso!"
+
+Exit Sub
+    
+ErrorHandler:
+    MsgBox "Não foi possível gerar o arquivo. Verifique se o nome do arquivo, caminho e formato estão corretos."
+    
+End Sub
+
+Sub gerar_PDF()     'nome da sub
+On Error GoTo ErrorHandler  'caso dê um erro durante a execução, vá para a linha do ErrorHandler
+
+Dim path As String   'declarando o tipo da variável ‘path’ como uma string.
+Dim filename As String  'declarando o tipo da variável ‘filename’ como uma string.
+
+With Worksheets("Pag. 2 - PL por Classe")  'com a aba "Pag. 2 - PL por Classe", performe os passos abaixo
+
+    path = .Range("P3") 'associa o caminho indicado na célula P3 à variável ‘path’
+    filename = .Range("P4") 'associa o nome indicado na célula P4 à variável ‘filename’
+
+    .ExportAsFixedFormat Type:=xlTypePDF, filename:=path & filename, Quality:= _
+        xlQualityStandard, IncludeDocProperties:=True, IgnorePrintAreas:=False, _
+        OpenAfterPublish:=True 'exporta como PDF
+
+End With
+Exit Sub
+
+ErrorHandler: 'caso dê erro durante a execução, a seguinte mensagem aparecerá
+    MsgBox "Não foi possível gerar o arquivo. Verifique se o nome do arquivo, caminho e formato estão corretos."
+
+End Sub 'fim da sub
+Sub Imprimir()
+On Error GoTo ErrorHandler  'Caso dê um erro durante a execução, vá para a linha do ErrorHandler
+
+qtCopias = InputBox("Quantas cópias do documento deseja imprimir?") 'Abre uma janela para inserção da quantidade de cópias desejadas'
+
+    Application.Dialogs(xlDialogPrinterSetup).Show 'Abre uma janela para seleção da impressora'
+    Sheets("Pag. 2 - PL por Classe").PrintOut Copies:=Int(qtCopias), Collate:=True 'Imprime a quantidade de cópias desejadas da aba "Pag. 2 - PL por Classe"'
+    
+Exit Sub
+
+ErrorHandler: 'caso dê erro durante a execução, a seguinte mensagem aparecerá
+    MsgBox "Não foi possível imprimir o arquivo."
+
+End Sub
+
+
+Sub Imprimir_todas_abas()
+On Error GoTo ErrorHandler  'Caso dê um erro durante a execução, vá para a linha do ErrorHandler
+
+qtCopias = InputBox("Quantas cópias do documento deseja imprimir?") 'Abre uma janela para inserção da quantidade de cópias desejadas'
+
+    Application.Dialogs(xlDialogPrinterSetup).Show 'Abre uma janela para seleção da impressora'
+    ThisWorkbook.PrintOut Copies:=Int(qtCopias), Collate:=True 'Imprime a quantidade de cópias desejadas de todas abas do arquivo'
+    
+Exit Sub
+
+ErrorHandler: 'Caso dê erro durante a execução, a seguinte mensagem aparecerá
+    MsgBox "Não foi possível imprimir o arquivo."
+End Sub
+
+
+
